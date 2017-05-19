@@ -1,0 +1,108 @@
+---
+# tasks file for PeterMosmans.dokuwiki
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    install_recommends: false
+  with_items:
+    - ca-certificates
+    - openssl
+    - php5-gd
+    - php5-sqlite
+    - tar
+    - unzip
+    - zip
+
+- name: Make sure Dokuwiki base directory exists
+  file:
+    path: "{{ dokuwiki_base }}"
+    state: directory
+
+- name: Download and extract latest version of Dokuwiki
+  unarchive:
+    src: "{{ dokuwiki_url }}"
+    dest: "{{ dokuwiki_base }}"
+    remote_src: true
+    extra_opts: ['--strip-components=1']
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    mode: "0750"
+  tags:
+    - upgrade
+
+- block:
+  - name: Apply permissions for configuration files
+    file:
+      path: "{{ item }}"
+      # state: directory
+      mode: "0770"
+      group: "{{ dokuwiki_group }}"
+      owner: "{{ dokuwiki_user }}"
+      recurse: yes
+    with_items:
+      - "{{ dokuwiki_base }}/conf"
+      - "{{ dokuwiki_savedir }}"
+
+  - name: Apply and deploy configuration templates
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ dokuwiki_base }}/conf/{{ item.dest }}"
+      mode: "0770"
+      group: "{{ dokuwiki_group }}"
+      owner: "{{ dokuwiki_user }}"
+    with_items:
+      - src: acl.auth.php.j2
+        dest: acl.auth.php
+      - src: local.php.j2
+        dest: local.php.j2
+      - src: plugins.local.php.j2
+        dest: plugins.local.php
+      - src: users.auth.php
+        dest: users.auth.php
+
+  - name: Install cron job
+    template:
+      src: cleanup.sh.j2
+      dest: /etc/cron.daily/cleanup-dokuwiki
+      mode: "0755"
+      group: root
+      owner: root
+
+  - name: Secure configuration
+    file:
+      path: "{{ dokuwiki_base }}/install.php"
+      state: absent
+  when: dokuwiki_preconfigure
+
+- name: Set page permissions for Dokuwiki user
+  file:
+    path: "{{ dokuwiki_savedir }}/{{ item }}"
+    # state: directory
+    mode: "0770"
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    recurse: yes
+  with_items:
+    - attic
+    - cache
+    - index
+    - locks
+    - media
+    - media_attic
+    - media_meta
+    - meta
+    - pages
+    - tmp
+
+- name: Set configuration permissions
+  file:
+    path: "{{ dokuwiki_base }}/{{ item }}"
+    # state: directory
+    mode: "0770"
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    recurse: yes
+  with_items:
+    - lib/plugins/
+    - lib/tpl

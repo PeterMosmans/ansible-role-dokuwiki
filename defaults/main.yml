@@ -1,0 +1,9 @@
+---
+# defaults file for PeterMosmans.dokuwiki
+dokuwiki_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+dokuwiki_base: /var/www/html
+dokuwiki_preconfigure: true
+dokuwiki_title: "default Dokuwiki site"
+dokuwiki_savedir: /var/www/html/data
+dokuwiki_group: www-data
+dokuwiki_user: root
