@@ -3,8 +3,16 @@
  * Dokuwiki's Main Configuration File - Local Settings
  */
 $conf['title'] = '{{ dokuwiki_title }}';
+{% if dokuwiki_template is defined %}
+$conf['template'] = '{{ dokuwiki_template}}';
+{% endif %}
 $conf['lang'] = 'en';
 $conf['license'] = 'cc-by-sa';
 $conf['useacl'] = 1;
 $conf['superuser'] = '@admin';
 $conf['disableactions'] = 'register';
+{% if dokuwiki_conf is defined %}
+{%   for conf in dokuwiki_conf %}
+$conf{{ conf.index }} = {{ conf.value }};
+{%   endfor %}
+{% endif %}
