@@ -14,7 +14,7 @@
     - unzip
     - zip
 
-- name: Make sure Dokuwiki base directory exists
+- name: Make sure Dokuwiki base directory exists (workaround for Ansible bug)
   file:
     path: "{{ dokuwiki_base }}"
     state: directory
@@ -43,6 +43,8 @@
     with_items:
       - "{{ dokuwiki_base }}/conf"
       - "{{ dokuwiki_savedir }}"
+    tags:
+      - permission
 
   - name: Apply and deploy configuration templates
     template:
@@ -75,7 +77,87 @@
       state: absent
   when: dokuwiki_preconfigure
 
-- name: Set page permissions for Dokuwiki user
+- name: Remove (previous versions of) plugins
+  file:
+    path: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
+    state: absent
+  with_flattened:
+    - "{{ dokuwiki_plugins|default([]) }}"
+    - "{{ dokuwiki_plugins_remove|default([]) }}"
+  tags:
+    - plugins
+    - upgrade
+
+- name: Recreate directory for each plugin (workaround for Ansible bug)
+  file:
+    path: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
+    state: directory
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+  with_items: "{{ dokuwiki_plugins|default([]) }}"
+  tags:
+    - plugins
+    - upgrade
+
+- name: Download and install latest version of plugins
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
+    remote_src: true
+    extra_opts: ['--strip-components=1']
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    mode: "0770"
+  with_items: "{{ dokuwiki_plugins|default([]) }}"
+  tags:
+    - plugins
+    - upgrade
+
+- name: Remove previous versions of templates
+  file:
+    path: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
+    state: absent
+  with_items: "{{ dokuwiki_templates|default([]) }}"
+  tags:
+    - templates
+    - upgrade
+
+- name: Recreate directory for each template (workaround for Ansible bug)
+  file:
+    path: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
+    state: directory
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+  with_items: "{{ dokuwiki_templates|default([]) }}"
+  tags:
+    - templates
+    - upgrade
+
+- name: Download and install latest version of templates
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
+    remote_src: true
+    extra_opts: ['--strip-components=1']
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    mode: "0770"
+  with_items: "{{ dokuwiki_templates|default([]) }}"
+  tags:
+    - templates
+    - upgrade
+
+- name: Customize template using online files
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ dokuwiki_base }}/{{ item.dest }}"
+    remote_src: true
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ dokuwiki_overrides|default([]) }}"
+
+- name: Set Dokuwiki page permissions
   file:
     path: "{{ dokuwiki_savedir }}/{{ item }}"
     # state: directory
@@ -94,8 +176,11 @@
     - meta
     - pages
     - tmp
+  tags:
+    - permission
+    - upgrade
 
-- name: Set configuration permissions
+- name: Set Dokuwiki configuration permissions
   file:
     path: "{{ dokuwiki_base }}/{{ item }}"
     # state: directory
@@ -106,3 +191,6 @@
   with_items:
     - lib/plugins/
     - lib/tpl
+  tags:
+    - permission
+    - upgrade
