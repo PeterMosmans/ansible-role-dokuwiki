@@ -11,8 +11,8 @@ $conf['license'] = 'cc-by-sa';
 $conf['useacl'] = 1;
 $conf['superuser'] = '@admin';
 $conf['disableactions'] = 'register';
-{% if dokuwiki_conf is defined %}
-{%   for conf in dokuwiki_conf %}
-$conf{{ conf.index }} = {{ conf.value }};
+{% if dokuwiki_local is defined %}
+{%   for conf in dokuwiki_local %}
+$conf{{ conf.name }} = {{ conf.value }};
 {%   endfor %}
 {% endif %}
