@@ -60,8 +60,10 @@
         dest: local.php
       - src: plugins.local.php.j2
         dest: plugins.local.php
-      - src: users.auth.php
+      - src: users.auth.php.j2
         dest: users.auth.php
+    tags:
+      - configure
 
   - name: Install cron job
     template:
