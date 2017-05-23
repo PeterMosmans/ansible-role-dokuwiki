@@ -1,6 +1,6 @@
 galaxy_info:
   author: Peter Mosmans
-  description: Installs and configures Dokuwiki (including plugins and templates)
+  description: Installs, configures and hardens Dokuwiki (including plugins and templates)
   company: Go Forward
   license: GPLv3
   min_ansible_version: 2.0
