@@ -21,6 +21,6 @@ dokuwiki_acl_all: 0
 dokuwiki_acl_user: 8
 dokuwiki_disableactions: "register"
 dokuwiki_local:
-  - name: ['passcrypt']
+  - name: "['passcrypt']"
     value: 'bcrypt'
 dokuwiki_title: "default Dokuwiki site"
