@@ -196,3 +196,24 @@
   tags:
     - permission
     - upgrade
+
+- block:
+  - name: Apply and deploy Apache configuration for Dokuwiki
+    template:
+      src: dokuwiki.conf.j2
+      dest: /etc/apache2/sites-available/dokuwiki.conf
+      owner: root
+      group: root
+      mode: 640
+    tags:
+      - templates
+    notify:
+      - restart apache2
+
+  - name: Enable the site
+    command:
+      a2ensite dokuwiki.conf
+    notify:
+      - restart apache2
+
+  when: dokuwiki_configure_apache2 is defined and dokuwiki_configure_apache2
