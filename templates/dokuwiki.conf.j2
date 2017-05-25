@@ -9,7 +9,7 @@
         #ServerName www.example.com
 
         ServerAdmin webmaster@localhost
-        DocumentRoot {{ dokuwiki_basedir }}
+        DocumentRoot {{ dokuwiki_base }}
 
         # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
         # error, crit, alert, emerg.
@@ -17,8 +17,8 @@
         # modules, e.g.
         #LogLevel info ssl:warn
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/dokuwiki.log
+        CustomLog ${APACHE_LOG_DIR}/dokuwiki.log combined
         DirectoryIndex index.php
 
         # For most configuration files from conf-available/, which are
@@ -27,7 +27,7 @@
         # following line enables the CGI configuration for this host only
         # after it has been globally disabled with "a2disconf".
         #Include conf-available/serve-cgi-bin.conf
-      <Directory /var/www/html>
+      <Directory {{ dokuwiki_base }}>
         AllowOverride All
         Options -Indexes -MultiViews +FollowSymLinks
       </Directory>
