@@ -4,8 +4,8 @@ Ansible Role: Dokuwiki
 Build status for this role: [![Build Status](https://travis-ci.org/PeterMosmans/ansible-role-dokuwiki.svg)](https://travis-ci.org/PeterMosmans/ansible-role-dokuwiki)
 
 
-This role installs, configures, hardens and/or upgrades Dokuwiki on a server. The main focus is on preconfiguring Dokuwiki instances in a repeatable and secure fashion.
-It does not install a webserver by itself, but optionally it can add and enable an Apache configuration file (which is included as template in the role).
+This role installs, configures, hardens and/or upgrades Dokuwiki on a server. The main focus is on provisioning Dokuwiki instances in a repeatable and secure fashion.
+It does not install a webserver by itself, but it can add and enable an Apache configuration file (which is included as template in the role).
 
 
 Requirements
