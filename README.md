@@ -19,7 +19,7 @@ Role Variables
 
 Available variables are listed below, along with default values. The default values are specified in `default/main.yml`.
 
-**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration (dokuwiki.conf.j2) to Apache, and enable the site. By default, the variable is undefined (false).
+**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration (`dokuwiki.conf.j2`) to Apache, and enable the site. By default, the variable is undefined (false).
 
 
 **dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be found. By default, it uses the official Dokuwiki source.
@@ -46,6 +46,7 @@ dokuwiki_group: www-data
    src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
 ```
 
+
 **dokuwiki_plugins_remove**: A list of plugins to automatically remove upon installation or upgrade.
 Example:
 ```
@@ -61,6 +62,8 @@ dokuwiki_plugins_remove:
 
 
 **dokuwiki_preconfigure**: When true, apply configuration templates to preconfigure Dokuwiki. If not specified or false, Dokuwiki will be 'unconfigured'. See below in the preconfigure chapter which variables can be used in the configuration templates.
+Note that when this variable is true, it will (re-)template and overwrite the Dokuwiki configuration.
+
 The following configuration files are templated:
 - `/conf/acl.auth.php`
 - `/conf/local.php`
