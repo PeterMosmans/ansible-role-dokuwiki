@@ -17,8 +17,8 @@
         # modules, e.g.
         #LogLevel info ssl:warn
 
-        ErrorLog ${APACHE_LOG_DIR}/dokuwiki.log
-        CustomLog ${APACHE_LOG_DIR}/dokuwiki.log combined
+        ErrorLog ${APACHE_LOG_DIR}/{{ dokuwiki_name }}.log
+        CustomLog ${APACHE_LOG_DIR}/{{ dokuwiki_name }}.log combined
         DirectoryIndex index.php
 
         # For most configuration files from conf-available/, which are

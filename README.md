@@ -22,6 +22,13 @@ Available variables are listed below, along with default values. The default val
 **dokuwiki_configure_apache2**: When true, will deploy an Apache configuration (`dokuwiki.conf.j2`) to Apache, and enable the site. By default, the variable is undefined (false).
 
 
+**dokuwiki_name**: The 'internal' name of the dokuwiki, which is e.g. used for Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is true). This allows the Ansible role to be used for multiple Dokuwiki sites on the same server.
+Default:
+```
+dokuwiki_name: dokuwiki
+```
+
+
 **dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be found. By default, it uses the official Dokuwiki source.
 ```
 dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz

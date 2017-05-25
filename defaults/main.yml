@@ -3,6 +3,7 @@
 
 dokuwiki_base: /var/www/html
 dokuwiki_group: www-data
+dokuwiki_name: dokuwiki
 dokuwiki_plugins_remove:
   - name: authad
   - name: authldap

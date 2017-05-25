@@ -68,7 +68,7 @@
   - name: Install cron job
     template:
       src: cleanup.sh.j2
-      dest: /etc/cron.daily/cleanup-dokuwiki
+      dest: "/etc/cron.daily/cleanup-{{ dokuwiki_name }}"
       mode: "0755"
       group: root
       owner: root
@@ -205,7 +205,7 @@
   - name: Apply and deploy Apache configuration for Dokuwiki
     template:
       src: dokuwiki.conf.j2
-      dest: /etc/apache2/sites-available/dokuwiki.conf
+      dest: "/etc/apache2/sites-available/{{ dokuwiki_name }}.conf"
       owner: root
       group: root
       mode: 640
