@@ -208,7 +208,7 @@
       dest: "/etc/apache2/sites-available/{{ dokuwiki_name }}.conf"
       owner: root
       group: root
-      mode: 640
+      mode: "0640"
     tags:
       - templates
     notify:
@@ -216,7 +216,7 @@
 
   - name: Enable the site
     command:
-      a2ensite dokuwiki.conf
+      a2ensite {{ dokuwiki_name }}.conf
     notify:
       - restart apache2
 
