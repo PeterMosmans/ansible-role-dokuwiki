@@ -31,21 +31,21 @@
   tags:
     - upgrade
 
-- block:
-  - name: Apply permissions for configuration files
-    file:
-      path: "{{ item }}"
-      # state: directory
-      mode: "0770"
-      group: "{{ dokuwiki_group }}"
-      owner: "{{ dokuwiki_user }}"
-      recurse: yes
-    with_items:
-      - "{{ dokuwiki_base }}/conf"
-      - "{{ dokuwiki_savedir }}"
-    tags:
-      - permission
+- name: Apply permissions for configuration files
+  file:
+    path: "{{ item }}"
+    # state: directory
+    mode: "0770"
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+    recurse: yes
+  with_items:
+    - "{{ dokuwiki_base }}/conf"
+    - "{{ dokuwiki_savedir }}"
+  tags:
+    - permission
 
+- block:
   - name: Apply and deploy configuration templates
     template:
       src: "{{ item.src }}"
@@ -63,7 +63,7 @@
       - src: users.auth.php.j2
         dest: users.auth.php
     tags:
-      - configure
+      - provision
 
   - name: Install cron job
     template:
@@ -72,12 +72,16 @@
       mode: "0755"
       group: root
       owner: root
+    tags:
+      - provision
 
   - name: Secure configuration
     file:
       path: "{{ dokuwiki_base }}/install.php"
       state: absent
-  when: dokuwiki_preconfigure
+    tags:
+      - provision
+  when: dokuwiki_provision
 
 - name: Remove (previous versions of) plugins
   file:

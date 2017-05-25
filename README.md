@@ -61,8 +61,8 @@ dokuwiki_plugins_remove:
 ```
 
 
-**dokuwiki_preconfigure**: When true, apply configuration templates to preconfigure Dokuwiki. If not specified or false, Dokuwiki will be 'unconfigured'. See below in the preconfigure chapter which variables can be used in the configuration templates.
-Note that when this variable is true, it will (re-)template and overwrite the Dokuwiki configuration.
+**dokuwiki_provision**: When true, apply configuration templates to provision Dokuwiki. If not specified or false, Dokuwiki will be unprovisioned, a default installation. See below in the provisioning chapter which variables can be used in the configuration templates.
+Note that when this variable is true, it will (re-)template and overwrite the current Dokuwiki configuration.
 
 The following configuration files are templated:
 - `/conf/acl.auth.php`
@@ -72,7 +72,7 @@ The following configuration files are templated:
 
 Example:
 ```
-dokuwiki_preconfigure: true
+dokuwiki_provision: true
 ```
 
 
@@ -96,19 +96,28 @@ dokuwiki_user: root
 ```
 
 
-## Preconfigure
-The following variables will be used in the configuration templates (`local.php.j2`, `users.auth.php.j2`), and therefore will only be applied if `dokuwiki_preconfigure` is set to `true`.
+## Provisioning
+The following variables will be used in the configuration templates (`local.php.j2`, `users.auth.php.j2`), and therefore will only be applied if `dokuwiki_provision` is set to `true`.
 
 
-**dokuwiki_title** The Dokuwiki title
+**dokuwiki_acl_all**: The ACL bits for the default (@ALL) group. By default, only logged on users are allowed access (0).
+
+
+**dokuwiki_acl_user**: The ACL bits for the user (@user) group. By default, users have upload, create, edit, and read permissions (8).
+
+
+**dokuwiki_disableactions**: Which actions to disable. By default, registering is disabled.
+
+
+**dokuwiki_title**: The Dokuwiki title
 
 
 **dokuwiki_local**: A list of name / value configuration pairs to be added to the `local.php` configuration file.
 Example:
 ```
 dokuwiki_local:
- - name: ['mytemplate']
-   value: 'myvalue'
+  - name: ['passcrypt']
+    value: 'bcrypt'
 ```
 This will result in adding the following string to `/conf/local.php`:
 ```
