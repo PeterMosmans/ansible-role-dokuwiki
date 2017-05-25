@@ -5,7 +5,7 @@ Build status for this role: [![Build Status](https://travis-ci.org/PeterMosmans/
 
 
 This role installs, configures, hardens and/or upgrades Dokuwiki on a server. The main focus is on preconfiguring Dokuwiki instances in a repeatable and secure fashion.
-It does not install a webserver by itself.
+It does not install a webserver by itself, but optionally it can add and enable an Apache configuration file (which is included as template in the role).
 
 
 Requirements
@@ -19,9 +19,12 @@ Role Variables
 
 Available variables are listed below, along with default values. The default values are specified in `default/main.yml`.
 
-**dokuwiki_url**: The URL where the (latest) version of Dokuwiki can be found. By default, it uses the official Dokuwiki source.
+**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration (dokuwiki.conf.j2) to Apache, and enable the site. By default, the variable is undefined (false).
+
+
+**dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be found. By default, it uses the official Dokuwiki source.
 ```
-dokuwiki_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 ```
 
 
@@ -147,6 +150,7 @@ Example Playbook
   - role: PeterMosmans.dokuwiki
   vars:
     dokuwiki_base: /var/www/html
+    dokuwiki_configure_apache2: true
     dokuwiki_plugins:
       - name: tag
         src: https://github.com/dokufreaks/plugin-tag/tarball/master
@@ -176,6 +180,7 @@ Example Playbook
 This example will install Dokuwiki to `/var/www/html`, and use `/var/www/html/data` as data directory.
 It will install the plugins `tag` and `pagelist`, and remove the plugins `authad`, `authldap`, `authmysql`, `authpdo`, `authpgsql`, `info` and `popularity`.
 It will install and use the `bootstrap3` theme, and grant the user `admin` with the password `admin` access to the wiki.
+Moreover, it will configure and enable the Apache site.
 
 
 License
