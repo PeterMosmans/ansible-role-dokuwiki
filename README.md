@@ -48,7 +48,7 @@ dokuwiki_group: www-data
 
 
 **dokuwiki_plugins_remove**: A list of plugins to automatically remove upon installation or upgrade.
-Example:
+Default:
 ```
 dokuwiki_plugins_remove:
   - name: authad
