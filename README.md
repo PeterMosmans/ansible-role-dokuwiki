@@ -145,7 +145,7 @@ the `local.php` configuration file.
 Example:
 ```
 dokuwiki_local:
-  - name: ['passcrypt']
+  - name: "['passcrypt']"
     value: 'bcrypt'
 ```
 This will result in adding the following string to `/conf/local.php`:

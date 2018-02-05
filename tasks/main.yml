@@ -1,35 +1,15 @@
 ---
 # tasks file for PeterMosmans.dokuwiki
-- name: Install required packages
-  apt:
-    name: "{{ item }}"
-    state: present
-    install_recommends: false
-  with_items:
-    - ca-certificates
-    - openssl
-    - php5-gd
-    - php5-sqlite
-    - tar
-    - unzip
-    - zip
 
-- name: Make sure Dokuwiki base directory exists (workaround for Ansible bug)
-  file:
-    path: "{{ dokuwiki_base }}"
-    state: directory
+# Variable setup.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Download and extract latest version of Dokuwiki
-  unarchive:
-    src: "{{ dokuwiki_source }}"
-    dest: "{{ dokuwiki_base }}"
-    remote_src: true
-    extra_opts: ['--strip-components=1']
-    group: "{{ dokuwiki_group }}"
-    owner: "{{ dokuwiki_user }}"
-    mode: "0750"
-  tags:
-    - upgrade
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: setup-Archlinux.yml
+  when: ansible_os_family == 'Archlinux'
 
 - name: Apply permissions for configuration files
   file:
@@ -42,6 +22,7 @@
   with_items:
     - "{{ dokuwiki_base }}/conf"
     - "{{ dokuwiki_savedir }}"
+  when: ansible_os_family == 'Debian'
   tags:
     - permission
 
@@ -72,6 +53,7 @@
       mode: "0755"
       group: root
       owner: root
+    when: ansible_os_family == 'Debian'
     tags:
       - provision
 
@@ -197,6 +179,7 @@
   with_items:
     - lib/plugins/
     - lib/tpl
+  when: ansible_os_family == 'Debian'
   tags:
     - permission
     - upgrade
