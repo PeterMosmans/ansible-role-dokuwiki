@@ -233,4 +233,7 @@ GPLv3
 Author Information
 ------------------
 
-Created by Peter Mosmans. Suggestions, feedback and pull requests are always welcome.
+Created by Peter Mosmans. Suggestions, feedback and pull requests are always
+welcome.
+
+Contributions by @onny

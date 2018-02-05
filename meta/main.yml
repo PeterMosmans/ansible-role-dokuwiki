@@ -77,9 +77,9 @@ galaxy_info:
   #  - 2013.09
   #  - 2016.03
   #  - 2016.09
-  #- name: ArchLinux
-  #  versions:
-  #  - all
+  - name: ArchLinux
+    versions:
+    - all
   #  - any
   #- name: FreeBSD
   #  versions:
