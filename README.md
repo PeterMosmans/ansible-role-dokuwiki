@@ -123,7 +123,7 @@ The following variables will be used in the configuration templates (`local.php.
 Example:
 ```
 dokuwiki_local:
-  - name: ['passcrypt']
+  - name: "['passcrypt']"
     value: 'bcrypt'
 ```
 This will result in adding the following string to `/conf/local.php`:
