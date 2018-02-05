@@ -4,8 +4,10 @@ Ansible Role: Dokuwiki
 Build status for this role: [![Build Status](https://travis-ci.org/PeterMosmans/ansible-role-dokuwiki.svg)](https://travis-ci.org/PeterMosmans/ansible-role-dokuwiki)
 
 
-This role installs, configures, hardens and/or upgrades Dokuwiki on a server. The main focus is on provisioning Dokuwiki instances in a repeatable and secure fashion.
-It does not install a webserver by itself, but it can add and enable an Apache configuration file (which is included as template in the role).
+This role installs, configures, hardens and/or upgrades Dokuwiki on a server.
+The main focus is on provisioning Dokuwiki instances in a repeatable and secure
+fashion. It does not install a webserver by itself, but it can add and enable an
+Apache configuration file (which is included as template in the role).
 
 
 Requirements
@@ -17,19 +19,25 @@ A webserver having PHP installed, e.g. by using PeterMosmans.apache2
 Role Variables
 --------------
 
-Available variables are listed below, along with default values. The default values are specified in `default/main.yml`.
+Available variables are listed below, along with default values. The default
+values are specified in `default/main.yml`.
 
-**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration (`dokuwiki.conf.j2`) to Apache, and enable the site. By default, the variable is undefined (false).
+**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration
+(`dokuwiki.conf.j2`) to Apache, and enable the site. By default, the variable is
+undefined (false).
 
 
-**dokuwiki_name**: The 'internal' name of the dokuwiki, which is e.g. used for Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is true). This allows the Ansible role to be used for multiple Dokuwiki sites on the same server.
-Default:
+**dokuwiki_name**: The 'internal' name of the dokuwiki, which is e.g. used for
+Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is
+true). This allows the Ansible role to be used for multiple Dokuwiki sites on
+the same server. Default:
 ```
 dokuwiki_name: dokuwiki
 ```
 
 
-**dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be found. By default, it uses the official Dokuwiki source.
+**dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be
+found. By default, it uses the official Dokuwiki source.
 ```
 dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 ```
@@ -47,14 +55,17 @@ dokuwiki_group: www-data
 ```
 
 
-**dokuwiki_plugins**: A list of name / source pairs, with plugins to automatically install. The sources need to point to tar or .tgz sources (e.g.). Example:
+**dokuwiki_plugins**: A list of name / source pairs, with plugins to
+automatically install. The sources need to point to tar or .tgz sources (e.g.).
+Example:
 ```
  - name: pagelist
    src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
 ```
 
 
-**dokuwiki_plugins_remove**: A list of plugins to automatically remove upon installation or upgrade.
+**dokuwiki_plugins_remove**: A list of plugins to automatically remove upon
+installation or upgrade.
 Default:
 ```
 dokuwiki_plugins_remove:
@@ -68,8 +79,11 @@ dokuwiki_plugins_remove:
 ```
 
 
-**dokuwiki_provision**: When true, apply configuration templates to provision Dokuwiki. If not specified or false, Dokuwiki will be unprovisioned, a default installation. See below in the provisioning chapter which variables can be used in the configuration templates.
-Note that when this variable is true, it will (re-)template and overwrite the current Dokuwiki configuration.
+**dokuwiki_provision**: When true, apply configuration templates to provision
+Dokuwiki. If not specified or false, Dokuwiki will be unprovisioned, a default
+installation. See below in the provisioning chapter which variables can be used
+in the configuration templates. Note that when this variable is true, it will
+(re-)template and overwrite the current Dokuwiki configuration.
 
 The following configuration files are templated:
 - `/conf/acl.auth.php`
@@ -89,7 +103,9 @@ dokuwiki_savedir: /var/www/html/data
 ```
 
 
-**dokuwiki_templatess**: A list of name / source pairs, with templates to automatically install. The sources need to point to tar or .tgz sources (e.g.). Example:
+**dokuwiki_templates**: A list of name / source pairs, with templates to
+automatically install. The sources need to point to tar or .tgz sources (e.g.).
+Example:
 ```
 dokuwiki_templates:
  - name: bootstrap3
@@ -104,22 +120,28 @@ dokuwiki_user: root
 
 
 ## Provisioning
-The following variables will be used in the configuration templates (`local.php.j2`, `users.auth.php.j2`), and therefore will only be applied if `dokuwiki_provision` is set to `true`.
+The following variables will be used in the configuration templates
+(`local.php.j2`, `users.auth.php.j2`), and therefore will only be applied if
+`dokuwiki_provision` is set to `true`.
 
 
-**dokuwiki_acl_all**: The ACL bits for the default (@ALL) group. By default, only logged on users are allowed access (0).
+**dokuwiki_acl_all**: The ACL bits for the default (@ALL) group. By default,
+only logged on users are allowed access (0).
 
 
-**dokuwiki_acl_user**: The ACL bits for the user (@user) group. By default, users have upload, create, edit, and read permissions (8).
+**dokuwiki_acl_user**: The ACL bits for the user (@user) group. By default,
+users have upload, create, edit, and read permissions (8).
 
 
-**dokuwiki_disableactions**: Which actions to disable. By default, registering is disabled.
+**dokuwiki_disableactions**: Which actions to disable. By default, registering
+is disabled.
 
 
 **dokuwiki_title**: The Dokuwiki title
 
 
-**dokuwiki_local**: A list of name / value configuration pairs to be added to the `local.php` configuration file.
+**dokuwiki_local**: A list of name / value configuration pairs to be added to
+the `local.php` configuration file.
 Example:
 ```
 dokuwiki_local:
