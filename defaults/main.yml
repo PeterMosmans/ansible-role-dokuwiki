@@ -1,9 +1,27 @@
 ---
 # defaults file for PeterMosmans.dokuwiki
+# webserver 
+dokuwiki_webserver: "nginx" # [nginx, apache]
+dokuwiki_provision: false
+dokuwiki_webserver_nginx_conf: "/etc/nginx/" # This is nginx_main_template['conf_file_location'] if using nginxinc.nginx role
 
-dokuwiki_base: /var/www/html
+
+# for apache
+#dokuwiki_user: root
+#dokuwiki_group: www-data
+# for nginx
+dokuwiki_user: nginx
 dokuwiki_group: www-data
-dokuwiki_name: dokuwiki
+
+# Version to install
+dokuwiki_version: stable # [stable, old_stable, development]
+
+dokuwiki_server_name: "localhost"  
+dokuwiki_base: /var/www/dokuwiki
+dokuwiki_savedir: /var/www/dokuwiki/data
+
+
+dokuwiki_name: "dokuwiki"
 dokuwiki_plugins_remove:
   - name: authad
   - name: authldap
@@ -12,10 +30,7 @@ dokuwiki_plugins_remove:
   - name: authpgsql
   - name: info
   - name: popularity
-dokuwiki_provision: false
-dokuwiki_savedir: /var/www/html/data
-dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
-dokuwiki_user: root
+#dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 
 # Template parameters (will only be used when dokuwiki_provision is true)
 dokuwiki_acl_all: 0

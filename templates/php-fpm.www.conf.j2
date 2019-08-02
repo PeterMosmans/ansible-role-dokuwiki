@@ -1,0 +1,17 @@
+[www]
+
+user = {{ dokuwiki_user }}
+group = {{ dokuwiki_group }}
+
+; Changed because tmpfiles.d isn't working
+listen = /run/php7.2-fpm.sock
+
+listen.owner = {{ dokuwiki_user }}
+listen.group = {{ dokuwiki_group }}
+;listen.mode = 0660
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+

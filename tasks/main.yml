@@ -2,6 +2,9 @@
 # tasks file for PeterMosmans.dokuwiki
 
 # Variable setup.
+- name: Include Generic variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
@@ -184,6 +187,30 @@
     - permission
     - upgrade
 
+- name: Configure nginx and deploy Dokuwiki
+  block:
+  - name: Ensure Nginx conf.d exists
+    file:
+      path: "{{ nginx_main_template['conf_file_location'] }}/conf.d"
+      state: directory
+      group: "{{ dokuwiki_group }}"
+      owner: "{{ dokuwiki_user }}"
+      mode: "0770"
+
+  - name: Create dokuwiki nginx config file and restart Nginx
+    template:
+      src: nginx.dokuwiki.conf.j2
+      dest: "/etc/nginx/conf.d/{{ dokuwiki_name }}.conf"
+      owner: root
+      group: root
+      mode: "0640"
+    tags:
+      - templates
+    notify:
+      - restart nginx
+    #when: dokuwiki_webserver is defined and dokuwiki_webserver == "nginx"
+  when: dokuwiki_webserver == "nginx"
+
 - block:
   - name: Apply and deploy Apache configuration for Dokuwiki
     template:
@@ -204,3 +231,6 @@
       - restart apache2
 
   when: dokuwiki_configure_apache2 is defined and dokuwiki_configure_apache2
+
+
+ 
