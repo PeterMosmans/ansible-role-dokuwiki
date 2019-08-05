@@ -191,10 +191,10 @@
   block:
   - name: Ensure Nginx conf.d exists
     file:
-      path: "{{ nginx_main_template['conf_file_location'] }}/conf.d"
+      path: "{{ dokuwiki_webserver_nginx_conf }}/conf.d"
       state: directory
-      group: "{{ dokuwiki_group }}"
-      owner: "{{ dokuwiki_user }}"
+      group: root
+      owner: root
       mode: "0770"
 
   - name: Create dokuwiki nginx config file and restart Nginx

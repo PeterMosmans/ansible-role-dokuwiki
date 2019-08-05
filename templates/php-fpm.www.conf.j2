@@ -4,7 +4,7 @@ user = {{ dokuwiki_user }}
 group = {{ dokuwiki_group }}
 
 ; Changed because tmpfiles.d isn't working
-listen = /run/php7.2-fpm.sock
+listen = /run/php-fpm.sock
 
 listen.owner = {{ dokuwiki_user }}
 listen.group = {{ dokuwiki_group }}
