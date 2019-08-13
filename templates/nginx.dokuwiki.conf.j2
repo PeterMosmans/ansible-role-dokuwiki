@@ -51,8 +51,9 @@ server {
     fastcgi_busy_buffers_size 256k;
     fastcgi_temp_file_write_size 256k;
   }
-
-  location ~ /(data|conf|bin|inc)/ {
+  
+  # see https://www.dokuwiki.org/security
+  location ~ /(data|conf|bin|inc|vendor)/ {
     deny all;
   }
 

@@ -19,55 +19,51 @@ A webserver having PHP installed, e.g. by using PeterMosmans.apache2
 Role Variables
 --------------
 
+Dependencies and package related variables are defined in `vars/*`. This includes all dependencies for dokuwiki and recommended plugins, as well as the location of all dokuwiki branches. You can select which branch to install with `dokuwiki_version`
+
+| Variable                          | Comments                                                                |
+| :---                              | :---                                                                    |
+| `dokuwiki_stable_url`       | `dokuwiki_stable_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz`       |
+| `dokuwiki_old_stable_url`       | `dokuwiki_old_stable_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-oldstable.tgz`       |
+| `dokuwiki_development_url`       | `dokuwiki_development_url: http://github.com/splitbrain/dokuwiki/tarball/master`       |
+
+
 Available variables are listed below, along with default values. The default
 values are specified in `default/main.yml`.
 
-**dokuwiki_configure_apache2**: When true, will deploy an Apache configuration
-(`dokuwiki.conf.j2`) to Apache, and enable the site. By default, the variable is
-undefined (false).
+| Variable                          | Comments                                                                |
+| :---                              | :---                                                                    |
+| `dokuwiki_version`       | Version to install. `dokuwiki_version: stable`  |
+| `dokuwiki_configure_apache2`       | When true, will deploy an Apache configuration (`dokuwiki.conf.j2`) to Apache, and enable the site. `dokuwiki_configure_apache2: false`.       |
+| `dokuwiki_name`       | The 'internal' name of the dokuwiki, which is e.g. used for Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is true). This allows the Ansible role to be used for multiple Dokuwiki sites on the same server. Default: `dokuwiki_name: dokuwiki`       |
+| `dokuwiki_base`       | The local path where Dokuwiki will be installed. `dokuwiki_base: /var/www/html`       |
+| `dokuwiki_user`       | The user owning the Dokuwiki files. `dokuwiki_user: root`       |
+| `dokuwiki_group`       | The group owning the Dokuwiki files. `dokuwiki_group: www-data`       |
+| `dokuwiki_plugins`       | List of name / source pairs, with plugins to automatically install via dokuwiki's gittool. (1)       |
+| `dokuwiki_plugins_remove`       |  A list of plugins to automatically remove upon installation or upgrade. (2)      |
+| `dokuwiki_provision`       | When true, apply configuration templates to provision Dokuwiki. `dokuwiki_provision: true` (3)      |
+| ``       |        |
 
 
-**dokuwiki_name**: The 'internal' name of the dokuwiki, which is e.g. used for
-Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is
-true). This allows the Ansible role to be used for multiple Dokuwiki sites on
-the same server. Default:
-```
-dokuwiki_name: dokuwiki
-```
 
-
-**dokuwiki_source**: The URL where the (latest) version of Dokuwiki can be
-found. By default, it uses the official Dokuwiki source.
-```
-dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
-```
-
-
-**dokuwiki_base**: The local path where Dokuwiki will be installed.
-```
-dokuwiki_base: /var/www/html
-```
-
-
-**dokuwiki_group**: The group owning the Dokuwiki files.
-```
-dokuwiki_group: www-data
-```
-
-
-**dokuwiki_plugins**: A list of name / source pairs, with plugins to
-automatically install. The sources need to point to tar or .tgz sources (e.g.).
-Example:
-```
- - name: pagelist
-   src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
+(1) The current, opinionated list of default plugins is:
+```Yaml
+dokuwiki_plugins:
+  - name: pagelist
+  - name: fastwiki
+  - name: edittable
+  - name: dw2pdf
+  - name: bookcreator
+  - name: tag
+  - name: discussion
+  - name: dropfiles
+  - name: color
+  - name: nspages
+  - name: sortablejs
 ```
 
-
-**dokuwiki_plugins_remove**: A list of plugins to automatically remove upon
-installation or upgrade.
-Default:
-```
+(2) The default list of plugins to remove is:
+```Yaml
 dokuwiki_plugins_remove:
   - name: authad
   - name: authldap
@@ -79,8 +75,7 @@ dokuwiki_plugins_remove:
 ```
 
 
-**dokuwiki_provision**: When true, apply configuration templates to provision
-Dokuwiki. If not specified or false, Dokuwiki will be unprovisioned, a default
+(3) If not specified or false, Dokuwiki will be unprovisioned, a default
 installation. See below in the provisioning chapter which variables can be used
 in the configuration templates. Note that when this variable is true, it will
 (re-)template and overwrite the current Dokuwiki configuration.
@@ -91,10 +86,6 @@ The following configuration files are templated:
 - `/conf/plugins.local.php`
 - `/conf/users.auth.php`
 
-Example:
-```
-dokuwiki_provision: true
-```
 
 
 **dokuwiki_savedir**: The directory where all files (content) will be stored.
@@ -113,10 +104,6 @@ dokuwiki_templates:
 ```
 
 
-**dokuwiki_user**: The user owning the Dokuwiki files.
-```
-dokuwiki_user: root
-```
 
 
 ## Provisioning

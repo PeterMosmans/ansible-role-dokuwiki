@@ -10,8 +10,10 @@ dokuwiki_dependencies:
   - php-geshi
   - php-seclib
   - php-xml
-  #- php-fpm
+  - php-gd
   - ucf
+  - unzip
+  - tar
 
 dokuwiki_recommendations:
   - imagemagick
@@ -21,8 +23,5 @@ dokuwiki_recommendations:
 unused_for_now:
     - ca-certificates
     - openssl
-    - php5-gd
     - php5-sqlite
-    - tar
-    - unzip
     - zip

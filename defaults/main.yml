@@ -20,8 +20,36 @@ dokuwiki_server_name: "localhost"
 dokuwiki_base: /var/www/dokuwiki
 dokuwiki_savedir: /var/www/dokuwiki/data
 
+dokuwiki_plugins:
+  - name: pagelist
+    src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
+    # Lists pages in a nice looking table or unordered list.
+  - name: fastwiki
+    src: https://github.com/zioth/dokuwiki_fastwiki/archive/master.zip
+  - name: edittable
+    src: https://github.com/cosmocode/edittable/archive/master.zip
+  - name: dw2pdf
+    src: https://github.com/splitbrain/dokuwiki-plugin-dw2pdf/tarball/master
+  - name: bookcreator
+    src: https://github.com/Klap-in/dokuwiki-plugin-bookcreator/archive/master.zip
+  - name: tag
+    src: https://github.com/dokufreaks/plugin-tag/tarball/master
+    # Assign category tags to wiki pages
+  - name: discussion
+    src: https://github.com/dokufreaks/plugin-discussion/archive/master.zip
+  - name: dropfiles
+    src: https://github.com/cosmocode/dokuwiki-plugin-dropfiles/zipball/master
+    # Drop files into the edit area to upload them
+  - name: color
+    src: https://github.com/hanche/dokuwiki_color_plugin/archive/2018-10-12.zip
+    # Opportunity to write colored text in DokuWiki
+  - name: nspages
+    src: https://github.com/gturri/nspages/zipball/master
+    # Present a table of contents of the pages of a selected namespace
+  - name: sortablejs
+    src: https://github.com/FyiurAmron/sortablejs/zipball/master
+    #JavaScript for sortable tables
 
-dokuwiki_name: "dokuwiki"
 dokuwiki_plugins_remove:
   - name: authad
   - name: authldap
@@ -30,13 +58,41 @@ dokuwiki_plugins_remove:
   - name: authpgsql
   - name: info
   - name: popularity
-#dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+
 
 # Template parameters (will only be used when dokuwiki_provision is true)
 dokuwiki_acl_all: 0
 dokuwiki_acl_user: 8
-dokuwiki_disableactions: "register"
 dokuwiki_local:
   - name: "['passcrypt']"
     value: 'bcrypt'
-dokuwiki_title: "default Dokuwiki site"
+  - name: "['gzip_output']"
+    value: '1'
+  - name: "['updatecheck']"
+    value: '0'
+
+# Dokuwiki config options
+dokuwiki_name: "dokuwiki"
+dokuwiki_title: "Default Dokuwiki site"
+dokuwiki_opt_lang: "en"
+#dokuwiki_opt_superuser: "root"
+#dokuwiki_opt_fullname: "root"
+#dokuwiki_opt_email: "root"
+#dokuwiki_opt_password: "root"
+dokuwiki_opt_acl: "1"
+# dokuwiki_opt_policy
+# 0 - Open Wiki (read, write, upload for everyone)
+# 1 - Public Wiki (read for everyone, write and upload for registered users)
+# 2 - Closed Wiki (read, write, upload for registered users only)
+dokuwiki_opt_policy: "0"
+dokuwiki_disableactions: "register"
+#dokuwiki_opt_licence
+#cc-zero - CC0 1.0 Universal http://creativecommons.org/publicdomain/zero/1.0/
+#publicdomain - Public Domain http://creativecommons.org/licenses/publicdomain/
+#cc-by - CC Attribution 4.0 International http://creativecommons.org/licenses/by/4.0/
+#cc-by-sa - CC Attribution-Share Alike 4.0 International http://creativecommons.org/licenses/by-sa/4.0/
+#gnufdl - GNU Free Documentation License 1.3 http://www.gnu.org/licenses/fdl-1.3.html
+#cc-by-nc - CC Attribution-Noncommercial 4.0 International http://creativecommons.org/licenses/by-nc/4.0/
+#cc-by-nc-sa - CC Attribution-Noncommercial-Share Alike 4.0 International http://creativecommons.org/licenses/by-nc-sa/4.0/
+#0 - Do not show any license information
+dokuwiki_opt_license: "0"

@@ -23,7 +23,6 @@
     - name: Configure PGP-FPM Pool
       template:
         src: php-fpm.www.conf.j2
-        #dest: "/etc/php/*/fpm/pool.d/www.conf"
         dest: "{{ dokuwiki_phpfpm_confd.files[0].path }}/www.conf"
         mode: "0644"
         group: root

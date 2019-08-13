@@ -1,14 +1,15 @@
 <?php
 /**
  * Dokuwiki's Main Configuration File - Local Settings
+ * Generated via configuration management, do not edit directly
  */
 $conf['title'] = '{{ dokuwiki_title }}';
 {% if dokuwiki_template is defined %}
 $conf['template'] = '{{ dokuwiki_template}}';
 {% endif %}
-$conf['lang'] = 'en';
-$conf['license'] = 'cc-by-sa';
-$conf['useacl'] = 1;
+$conf['lang'] = '{{ dokuwiki_opt_lang }}';
+$conf['license'] = '{{ dokuwiki_opt_license }}';
+$conf['useacl'] = {{ dokuwiki_opt_acl }};
 $conf['superuser'] = '@admin';
 $conf['disableactions'] = '{{ dokuwiki_disableactions }}';
 {% if dokuwiki_local is defined %}
