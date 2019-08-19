@@ -20,8 +20,8 @@ dokuwiki_recommendations:
   - php-gd
   - php-ldap
 
-unused_for_now:
-    - ca-certificates
-    - openssl
-    - php5-sqlite
-    - zip
+# unused_for_now:
+#     - ca-certificates
+#     - openssl
+#     - php5-sqlite
+#     - zip

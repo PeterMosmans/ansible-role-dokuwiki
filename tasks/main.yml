@@ -68,31 +68,9 @@
       - provision
   when: dokuwiki_provision
 
-# - name: Remove (previous versions of) plugins
-#   file:
-#     path: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
-#     state: absent
-#   with_flattened:
-#     - "{{ dokuwiki_plugins|default([]) }}"
-#     - "{{ dokuwiki_plugins_remove|default([]) }}"
-#   tags:
-#     - plugins
-#     - upgrade
-
-# - name: Recreate directory for each plugin (workaround for Ansible bug)
-#   file:
-#     path: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
-#     state: directory
-#     group: "{{ dokuwiki_group }}"
-#     owner: "{{ dokuwiki_user }}"
-#   with_items: "{{ dokuwiki_plugins|default([]) }}"
-#   tags:
-#     - plugins
-#     - upgrade
-
 - name: Download and install latest version of plugins via Dokuwiki's gittool
   become: yes
-  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install {{item.name}}"
+  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install {{item}}"
   with_items: "{{ dokuwiki_plugins|default([]) }}"
   tags:
     - plugins
@@ -100,7 +78,7 @@
 
 - name: Download and install latest version of templates via Dokuwiki's gittool
   become: yes
-  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install {{item.name}}"
+  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install template:{{item.name}}"
   with_items: "{{ dokuwiki_templates|default([]) }}"
   tags:
     - templates
@@ -231,7 +209,7 @@
 - block:
   - name: Apply and deploy Apache configuration for Dokuwiki
     template:
-      src: dokuwiki.conf.j2
+      src: apache.dokuwiki.conf.j2
       dest: "/etc/apache2/sites-available/{{ dokuwiki_name }}.conf"
       owner: root
       group: root

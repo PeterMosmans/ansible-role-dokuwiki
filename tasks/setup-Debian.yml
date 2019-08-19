@@ -16,10 +16,14 @@
         file_type: directory
       register: dokuwiki_phpfpm_confd
 
-    - name: DEBUG THIS FUCK
-      debug:
-        var: dokuwiki_phpfpm_confd.files[0].path
-
+    - name: Register the PHP-FPM service name
+      find:
+        paths: "/lib/systemd/system/"
+        patterns: "php*fpm.service"
+        file_type: file
+      register: dokuwiki_phpfpm_service
+      # resulting service name will be "dokuwiki_phpfpm_service.files[0].path | basename | splitext | first"... yeah.
+  
     - name: Configure PGP-FPM Pool
       template:
         src: php-fpm.www.conf.j2
@@ -36,7 +40,7 @@
         groups: "www-data"
         append: yes
     
-  when: dokuwiki_webserver == "nginx"  
+  when: dokuwiki_webserver == "nginx" 
 #
 
 - name: Install Required Dependencies

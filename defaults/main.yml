@@ -20,35 +20,50 @@ dokuwiki_server_name: "localhost"
 dokuwiki_base: /var/www/dokuwiki
 dokuwiki_savedir: /var/www/dokuwiki/data
 
+# dokuwiki_plugins:
+#   - name: pagelist
+#     src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
+#     # Lists pages in a nice looking table or unordered list.
+#   - name: fastwiki
+#     src: https://github.com/zioth/dokuwiki_fastwiki/archive/master.zip
+#   - name: edittable
+#     src: https://github.com/cosmocode/edittable/archive/master.zip
+#   - name: dw2pdf
+#     src: https://github.com/splitbrain/dokuwiki-plugin-dw2pdf/tarball/master
+#   - name: bookcreator
+#     src: https://github.com/Klap-in/dokuwiki-plugin-bookcreator/archive/master.zip
+#   - name: tag
+#     src: https://github.com/dokufreaks/plugin-tag/tarball/master
+#     # Assign category tags to wiki pages
+#   - name: discussion
+#     src: https://github.com/dokufreaks/plugin-discussion/archive/master.zip
+#   - name: dropfiles
+#     src: https://github.com/cosmocode/dokuwiki-plugin-dropfiles/zipball/master
+#     # Drop files into the edit area to upload them
+#   - name: color
+#     src: https://github.com/hanche/dokuwiki_color_plugin/archive/2018-10-12.zip
+#     # Opportunity to write colored text in DokuWiki
+#   - name: nspages
+#     src: https://github.com/gturri/nspages/zipball/master
+#     # Present a table of contents of the pages of a selected namespace
+#   - name: sortablejs
+#     src: https://github.com/FyiurAmron/sortablejs/zipball/master
+#     #JavaScript for sortable tables
+
 dokuwiki_plugins:
-  - name: pagelist
-    src: https://github.com/dokufreaks/plugin-pagelist/tarball/master
-    # Lists pages in a nice looking table or unordered list.
-  - name: fastwiki
-    src: https://github.com/zioth/dokuwiki_fastwiki/archive/master.zip
-  - name: edittable
-    src: https://github.com/cosmocode/edittable/archive/master.zip
-  - name: dw2pdf
-    src: https://github.com/splitbrain/dokuwiki-plugin-dw2pdf/tarball/master
-  - name: bookcreator
-    src: https://github.com/Klap-in/dokuwiki-plugin-bookcreator/archive/master.zip
-  - name: tag
-    src: https://github.com/dokufreaks/plugin-tag/tarball/master
-    # Assign category tags to wiki pages
-  - name: discussion
-    src: https://github.com/dokufreaks/plugin-discussion/archive/master.zip
-  - name: dropfiles
-    src: https://github.com/cosmocode/dokuwiki-plugin-dropfiles/zipball/master
-    # Drop files into the edit area to upload them
-  - name: color
-    src: https://github.com/hanche/dokuwiki_color_plugin/archive/2018-10-12.zip
-    # Opportunity to write colored text in DokuWiki
-  - name: nspages
-    src: https://github.com/gturri/nspages/zipball/master
-    # Present a table of contents of the pages of a selected namespace
-  - name: sortablejs
-    src: https://github.com/FyiurAmron/sortablejs/zipball/master
-    #JavaScript for sortable tables
+  - pagelist
+  - fastwiki
+  - edittable
+  - dw2pdf
+  - bookcreator
+  - tag
+  - discussion
+  - dropfiles
+  - color
+  - nspages
+  - sortablejs
+
+
 
 dokuwiki_plugins_remove:
   - name: authad

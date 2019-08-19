@@ -19,6 +19,10 @@ A webserver having PHP installed, e.g. by using PeterMosmans.apache2
 Role Variables
 --------------
 
+
+
+### /vars
+
 Dependencies and package related variables are defined in `vars/*`. This includes all dependencies for dokuwiki and recommended plugins, as well as the location of all dokuwiki branches. You can select which branch to install with `dokuwiki_version`
 
 | Variable                          | Comments                                                                |
@@ -27,26 +31,30 @@ Dependencies and package related variables are defined in `vars/*`. This include
 | `dokuwiki_old_stable_url`       | `dokuwiki_old_stable_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-oldstable.tgz`       |
 | `dokuwiki_development_url`       | `dokuwiki_development_url: http://github.com/splitbrain/dokuwiki/tarball/master`       |
 
+### /defaults
 
-Available variables are listed below, along with default values. The default
-values are specified in `default/main.yml`.
+All other available variables are listed below, along with default values. The default values are specified in `default/main.yml`.
 
 | Variable                          | Comments                                                                |
 | :---                              | :---                                                                    |
+| `dokuwiki_server_name`       | Dokuwiki ServerName Directive. `dokuwiki_server_name: "localhost"`      |
+| `dokuwiki_base`       | Dokuwiki base directory. `dokuwiki_base: /var/www/dokuwiki`      |
+| `dokuwiki_savedir`       | Dokuwiki data directory. `dokuwiki_savedir: /var/www/dokuwiki/data`      |
 | `dokuwiki_version`       | Version to install. `dokuwiki_version: stable`  |
 | `dokuwiki_configure_apache2`       | When true, will deploy an Apache configuration (`dokuwiki.conf.j2`) to Apache, and enable the site. `dokuwiki_configure_apache2: false`.       |
 | `dokuwiki_name`       | The 'internal' name of the dokuwiki, which is e.g. used for Apache logfiles and the cleanup cronjob. (when `dokuwiki_configure_apache2` is true). This allows the Ansible role to be used for multiple Dokuwiki sites on the same server. Default: `dokuwiki_name: dokuwiki`       |
 | `dokuwiki_base`       | The local path where Dokuwiki will be installed. `dokuwiki_base: /var/www/html`       |
 | `dokuwiki_user`       | The user owning the Dokuwiki files. `dokuwiki_user: root`       |
 | `dokuwiki_group`       | The group owning the Dokuwiki files. `dokuwiki_group: www-data`       |
-| `dokuwiki_plugins`       | List of name / source pairs, with plugins to automatically install via dokuwiki's gittool. (1)       |
-| `dokuwiki_plugins_remove`       |  A list of plugins to automatically remove upon installation or upgrade. (2)      |
-| `dokuwiki_provision`       | When true, apply configuration templates to provision Dokuwiki. `dokuwiki_provision: true` (3)      |
-| ``       |        |
+| `dokuwiki_plugins` (1)      | List of name / source pairs, with plugins to automatically install via dokuwiki's gittool.       |
+| `dokuwiki_plugins_remove` (2)      |  A list of plugins to automatically remove upon installation or upgrade.       |
+| `dokuwiki_templates` (3)      | A list of templates to automatically install.     |
+| `dokuwiki_provision` (4)      | When true, apply configuration templates to provision Dokuwiki. `dokuwiki_provision: true`      |
+| `dokuwiki_savedir`       | The directory where all files (content) will be stored. See [Dokuwiki Security - Move Directories out of DocRoot](https://www.dokuwiki.org/security#move_directories_out_of_docroot) for more info. `dokuwiki_savedir: /var/www/html/data`       |
 
 
 
-(1) The current, opinionated list of default plugins is:
+(1) `dokuwiki_plugins`:  The current, opinionated list of default plugins is:
 ```Yaml
 dokuwiki_plugins:
   - name: pagelist
@@ -62,7 +70,7 @@ dokuwiki_plugins:
   - name: sortablejs
 ```
 
-(2) The default list of plugins to remove is:
+(2) `dokuwiki_plugins_remove`: The default list of plugins to remove is:
 ```Yaml
 dokuwiki_plugins_remove:
   - name: authad
@@ -74,70 +82,63 @@ dokuwiki_plugins_remove:
   - name: popularity
 ```
 
+(3) `dokuwiki_templates`: A list of templates to install
+```Yaml
+dokuwiki_templates:
+ - name: bootstrap3
+```
 
-(3) If not specified or false, Dokuwiki will be unprovisioned, a default
+
+
+(4) `dokuwiki_provision`: If not specified or false, Dokuwiki will be unprovisioned, a default
 installation. See below in the provisioning chapter which variables can be used
 in the configuration templates. Note that when this variable is true, it will
 (re-)template and overwrite the current Dokuwiki configuration.
 
-The following configuration files are templated:
-- `/conf/acl.auth.php`
-- `/conf/local.php`
-- `/conf/plugins.local.php`
-- `/conf/users.auth.php`
 
 
-
-**dokuwiki_savedir**: The directory where all files (content) will be stored.
-```
-dokuwiki_savedir: /var/www/html/data
-```
+Configuration templates
+--------------
+The following configuration files, located at `conf/*`, are templated:
 
 
-**dokuwiki_templates**: A list of name / source pairs, with templates to
-automatically install. The sources need to point to tar or .tgz sources (e.g.).
-Example:
-```
-dokuwiki_templates:
- - name: bootstrap3
-   src: https://github.com/LotarProject/dokuwiki-template-bootstrap3/tarball/master
-```
-
-
+| Template                          | Comments                                                                |
+| :---                              | :---                                                                    |
+| `acl.auth.php.j2`       | Dokuwiki ACL Config file      |
+| `cleanup.sh.j2`       | Cron job to cleanup DokuWiki installations      |
+| `local.php.j2`       | Dokuwiki's Main Configuration File - Local Settings      |
+| `php-fpm.www.conf.j2`       | PHP FPM config file - altered to make this role php version agnostic      |
+| `plugins.local.php.j2`       | Local plugin enable/disable settings - recommended to be used with `dokuwiki_plugins_removed`     |
+| `users.auth.php.j2`       | If dokuwiki_users is defined, this file is provisioned with those local users    |
+| `apache.dokuwiki.conf.j2`       | Apache config for dokuwiki      |
+| `nginx.dokuwiki.conf.j2`       | Nginx config for dokuwiki      |
 
 
 ## Provisioning
-The following variables will be used in the configuration templates
-(`local.php.j2`, `users.auth.php.j2`), and therefore will only be applied if
+The following variables will be used in the configuration templates, and therefore will only be applied if
 `dokuwiki_provision` is set to `true`.
 
-
-**dokuwiki_acl_all**: The ACL bits for the default (@ALL) group. By default,
-only logged on users are allowed access (0).
-
-
-**dokuwiki_acl_user**: The ACL bits for the user (@user) group. By default,
-users have upload, create, edit, and read permissions (8).
-
-
-**dokuwiki_disableactions**: Which actions to disable. By default, registering
-is disabled.
+| Template                          | Comments                                                                |
+| :---                              | :---                                                                    |
+| `dokuwiki_title`       | The Dokuwiki title   |
+| `dokuwiki_acl_all`       | The ACL bits for the default (@ALL) group. By default, only logged on users are allowed access (0).     |
+| `dokuwiki_acl_user`       | The ACL bits for the user (@user) group. By default, users have upload, create, edit, and read permissions (8).     |
+| `dokuwiki_disableactions`       | Which actions to disable. By default,  user auto registering is disabled.     |
+| `dokuwiki_local` (1)   | A list of name / value configuration pairs to be added to the `local.php` configuration file.   |
+| `dokuwiki_users `       | A list of users     |
 
 
-**dokuwiki_title**: The Dokuwiki title
 
-
-**dokuwiki_local**: A list of name / value configuration pairs to be added to
-the `local.php` configuration file.
-Example:
-```
+(1) `dokuwiki_local`: You can add additional parameters to the `local.php` configuration file, as seen here:
+```Yaml
 dokuwiki_local:
   - name: "['passcrypt']"
     value: 'bcrypt'
 ```
+
 This will result in adding the following string to `/conf/local.php`:
-```
-$conf['mytemplate'] = 'myvalue';
+```Yaml
+$conf['passcrypt'] = 'bcrypt';
 ```
 
 
@@ -162,6 +163,8 @@ dokuwiki_users:
 
 This will result in adding the user admin to Dokuwiki, with the bcrypted password `admin`.
 
+
+
 Dependencies
 ------------
 
@@ -170,7 +173,7 @@ None.
 
 Example Playbook
 ----------------
-```
+```Yaml
 - hosts: all
   become: yes
   become_method: sudo
@@ -205,6 +208,7 @@ Example Playbook
         email: admin@admin
         groups: admin,user
 ```
+
 This example will install Dokuwiki to `/var/www/html`, and use `/var/www/html/data` as data directory.
 It will install the plugins `tag` and `pagelist`, and remove the plugins `authad`, `authldap`, `authmysql`, `authpdo`, `authpgsql`, `info` and `popularity`.
 It will install and use the `bootstrap3` theme, and grant the user `admin` with the password `admin` access to the wiki.
@@ -220,7 +224,10 @@ GPLv3
 Author Information
 ------------------
 
-Created by Peter Mosmans. Suggestions, feedback and pull requests are always
+Created by [Peter Mosmans](https://github.com/PeterMosmans). Suggestions, feedback and pull requests are always
 welcome.
 
-Contributions by @onny
+### Contributors
+
+- [Jonas Heinrich](https://github.com/onny)
+- [B Cacheira](https://github.com/cacheira)

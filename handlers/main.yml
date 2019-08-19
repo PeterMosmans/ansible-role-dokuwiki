@@ -12,5 +12,5 @@
 
 - name: restart php-fpm
   service:
-    name: php*-fpm
+    name: "{{ dokuwiki_phpfpm_service.files[0].path | basename | splitext | first }}"
     state: restarted
