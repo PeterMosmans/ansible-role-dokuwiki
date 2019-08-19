@@ -13,7 +13,7 @@ Apache configuration file (which is included as template in the role).
 Requirements
 ------------
 
-A webserver having PHP installed, e.g. by using PeterMosmans.apache2
+A webserver having PHP installed. For Apache, we suggest using [PeterMosmans.apache2](https://github.com/PeterMosmans/ansible-role-apache2). If you prefer Nginx, please use [Nginxinc.nginx](https://github.com/nginxinc/ansible-role-nginx).
 
 
 Role Variables
