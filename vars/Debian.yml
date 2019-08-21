@@ -11,6 +11,7 @@ dokuwiki_dependencies:
   - php-seclib
   - php-xml
   - php-gd
+  - php-mbstring
   - ucf
   - unzip
   - tar

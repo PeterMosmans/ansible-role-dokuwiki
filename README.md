@@ -125,7 +125,8 @@ The following variables will be used in the configuration templates, and therefo
 | `dokuwiki_acl_user`       | The ACL bits for the user (@user) group. By default, users have upload, create, edit, and read permissions (8).     |
 | `dokuwiki_disableactions`       | Which actions to disable. By default,  user auto registering is disabled.     |
 | `dokuwiki_local` (1)   | A list of name / value configuration pairs to be added to the `local.php` configuration file.   |
-| `dokuwiki_users `       | A list of users     |
+| `dokuwiki_users ` (2)      | A list of users     |
+| `dokuwiki_opt_license` (3)      | The content license to use. `dokuwiki_opt_license: "0"`     |
 
 
 
@@ -141,9 +142,8 @@ This will result in adding the following string to `/conf/local.php`:
 $conf['passcrypt'] = 'bcrypt';
 ```
 
-
-**dokuwiki_users**: A list of users, containing the following name / value pairs:
-```
+(2) `dokuwiki_users`: A list of users, containing the following name / value pairs:
+```Yaml
 - login: login
 - hash: password hash
 - name: full name
@@ -152,7 +152,7 @@ $conf['passcrypt'] = 'bcrypt';
 ```
 
 Example:
-```
+```Yaml
 dokuwiki_users:
 - login: admin
   hash: "$2y$05$Nr3wFqH54gcdhxPK9easseLSVwLAnLTD2flYmQbAbCVIiiTU4mCjS"
@@ -160,8 +160,18 @@ dokuwiki_users:
   email: admin@admin
   groups: admin,user
 ```
-
 This will result in adding the user admin to Dokuwiki, with the bcrypted password `admin`.
+
+
+(3) `dokuwiki_opt_license`: The options for this are:
+- cc-zero - [CC0 1.0 Universal](http://creativecommons.org/publicdomain/zero/1.0/)
+- publicdomain - [Public Domain](http://creativecommons.org/licenses/publicdomain/)
+- cc-by - [CC Attribution 4.0](International http://creativecommons.org/licenses/by/4.0/)
+- cc-by-sa - [CC Attribution-Share Alike 4.0](International http://creativecommons.org/licenses/by-sa/4.0/)
+- gnufdl - [GNU Free Documentation License 1.3](http://www.gnu.org/licenses/fdl-1.3.html)
+- cc-by-nc - [CC Attribution-Noncommercial 4.0](International http://creativecommons.org/licenses/by-nc/4.0/)
+- cc-by-nc-sa - [CC Attribution-Noncommercial-Share Alike 4.0](International http://creativecommons.org/licenses/by-nc-sa/4.0/)
+- 0 - Do not show any license information
 
 
 
