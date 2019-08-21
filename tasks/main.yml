@@ -29,6 +29,22 @@
   tags:
     - permission
 
+- name: Download and install latest version of plugins via Dokuwiki's gittool
+  become: yes
+  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install {{item}}"
+  with_items: "{{ dokuwiki_plugins|default([]) }}"
+  tags:
+    - plugins
+    - upgrade
+
+- name: Download and install latest version of templates via Dokuwiki's gittool
+  become: yes
+  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install template:{{item.name}}"
+  with_items: "{{ dokuwiki_templates|default([]) }}"
+  tags:
+    - templates
+    - upgrade
+
 - block:
   - name: Apply and deploy configuration templates
     template:
@@ -68,21 +84,6 @@
       - provision
   when: dokuwiki_provision
 
-- name: Download and install latest version of plugins via Dokuwiki's gittool
-  become: yes
-  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install {{item}}"
-  with_items: "{{ dokuwiki_plugins|default([]) }}"
-  tags:
-    - plugins
-    - upgrade
-
-- name: Download and install latest version of templates via Dokuwiki's gittool
-  become: yes
-  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install template:{{item.name}}"
-  with_items: "{{ dokuwiki_templates|default([]) }}"
-  tags:
-    - templates
-    - upgrade
 
 # - name: Download and install latest version of plugins
 #   become: yes

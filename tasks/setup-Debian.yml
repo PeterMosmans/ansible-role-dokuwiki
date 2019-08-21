@@ -1,4 +1,13 @@
 ---
+- name: Install Required Dependencies # must be done before php-fpm, due to mbstring
+  become: true
+  package:
+    name: "{{ item }}"
+    state: latest
+    install_recommends: false
+  with_items: "{{ dokuwiki_dependencies + dokuwiki_recommendations }}"
+#
+
 - name: Setup PHP-FPM
   block:
     - name: Install PHP-FPM
@@ -43,14 +52,6 @@
   when: dokuwiki_webserver == "nginx" 
 #
 
-- name: Install Required Dependencies
-  become: true
-  package:
-    name: "{{ item }}"
-    state: latest
-    install_recommends: false
-  with_items: "{{ dokuwiki_dependencies + dokuwiki_recommendations }}"
-#
 
 - name: Make sure Dokuwiki base directory exists (workaround for Ansible bug)
   file:

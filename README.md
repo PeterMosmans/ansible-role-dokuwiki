@@ -20,7 +20,6 @@ Role Variables
 --------------
 
 
-
 ### /vars
 
 Dependencies and package related variables are defined in `vars/*`. This includes all dependencies for dokuwiki and recommended plugins, as well as the location of all dokuwiki branches. You can select which branch to install with `dokuwiki_version`
@@ -57,29 +56,29 @@ All other available variables are listed below, along with default values. The d
 (1) `dokuwiki_plugins`:  The current, opinionated list of default plugins is:
 ```Yaml
 dokuwiki_plugins:
-  - name: pagelist
-  - name: fastwiki
-  - name: edittable
-  - name: dw2pdf
-  - name: bookcreator
-  - name: tag
-  - name: discussion
-  - name: dropfiles
-  - name: color
-  - name: nspages
-  - name: sortablejs
+  - pagelist
+  - fastwiki
+  - edittable
+  - dw2pdf
+  - bookcreator
+  - tag
+  - discussion
+  - dropfiles
+  - color
+  - nspages
+  - sortablejs
 ```
 
 (2) `dokuwiki_plugins_remove`: The default list of plugins to remove is:
 ```Yaml
 dokuwiki_plugins_remove:
-  - name: authad
-  - name: authldap
-  - name: authmysql
-  - name: authpdo
-  - name: authpgsql
-  - name: info
-  - name: popularity
+  - authad
+  - authldap
+  - authmysql
+  - authpdo
+  - authpgsql
+  - info
+  - popularity
 ```
 
 (3) `dokuwiki_templates`: A list of templates to install
@@ -166,11 +165,11 @@ This will result in adding the user admin to Dokuwiki, with the bcrypted passwor
 (3) `dokuwiki_opt_license`: The options for this are:
 - cc-zero - [CC0 1.0 Universal](http://creativecommons.org/publicdomain/zero/1.0/)
 - publicdomain - [Public Domain](http://creativecommons.org/licenses/publicdomain/)
-- cc-by - [CC Attribution 4.0](International http://creativecommons.org/licenses/by/4.0/)
-- cc-by-sa - [CC Attribution-Share Alike 4.0](International http://creativecommons.org/licenses/by-sa/4.0/)
+- cc-by - [CC Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0/)
+- cc-by-sa - [CC Attribution-Share Alike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/)
 - gnufdl - [GNU Free Documentation License 1.3](http://www.gnu.org/licenses/fdl-1.3.html)
-- cc-by-nc - [CC Attribution-Noncommercial 4.0](International http://creativecommons.org/licenses/by-nc/4.0/)
-- cc-by-nc-sa - [CC Attribution-Noncommercial-Share Alike 4.0](International http://creativecommons.org/licenses/by-nc-sa/4.0/)
+- cc-by-nc - [CC Attribution-Noncommercial 4.0International](http://creativecommons.org/licenses/by-nc/4.0/)
+- cc-by-nc-sa - [CC Attribution-Noncommercial-Share Alike 4.0 International](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 - 0 - Do not show any license information
 
 

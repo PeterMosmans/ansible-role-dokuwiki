@@ -4,7 +4,16 @@
  *
  */
 
-$plugins['authad']    = 0;
-$plugins['authldap']  = 0;
-$plugins['authmysql'] = 0;
-$plugins['authpgsql'] = 0;
+# Disabled plugins
+{% if dokuwiki_plugins_remove is defined %}
+{%   for plugin_name in dokuwiki_plugins_remove %}
+$plugins['{{ plugin_name }}'] = 0;
+{%   endfor %}
+{% endif %}
+
+# Enabled plugins
+{% if dokuwiki_plugins is defined %}
+{%   for plugin_name in dokuwiki_plugins %}
+$plugins['{{ plugin_name }}'] = 1;
+{%   endfor %}
+{% endif %}
