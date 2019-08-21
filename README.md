@@ -105,7 +105,7 @@ The following configuration files, located at `conf/*`, are templated:
 | :---                              | :---                                                                    |
 | `acl.auth.php.j2`       | Dokuwiki ACL Config file      |
 | `cleanup.sh.j2`       | Cron job to cleanup DokuWiki installations      |
-| `local.php.j2`       | Dokuwiki's Main Configuration File - Local Settings      |
+| `local.protected.php.j2`       | Dokuwiki's Main Configuration File - Local Settings, protected      |
 | `php-fpm.www.conf.j2`       | PHP FPM config file - altered to make this role php version agnostic      |
 | `plugins.local.php.j2`       | Local plugin enable/disable settings - recommended to be used with `dokuwiki_plugins_removed`     |
 | `users.auth.php.j2`       | If dokuwiki_users is defined, this file is provisioned with those local users    |
@@ -123,20 +123,20 @@ The following variables will be used in the configuration templates, and therefo
 | `dokuwiki_acl_all`       | The ACL bits for the default (@ALL) group. By default, only logged on users are allowed access (0).     |
 | `dokuwiki_acl_user`       | The ACL bits for the user (@user) group. By default, users have upload, create, edit, and read permissions (8).     |
 | `dokuwiki_disableactions`       | Which actions to disable. By default,  user auto registering is disabled.     |
-| `dokuwiki_local` (1)   | A list of name / value configuration pairs to be added to the `local.php` configuration file.   |
+| `dokuwiki_local` (1)   | A list of name / value configuration pairs to be added to the `local.protected.php` configuration file.   |
 | `dokuwiki_users ` (2)      | A list of users     |
 | `dokuwiki_opt_license` (3)      | The content license to use. `dokuwiki_opt_license: "0"`     |
 
 
 
-(1) `dokuwiki_local`: You can add additional parameters to the `local.php` configuration file, as seen here:
+(1) `dokuwiki_local`: You can add additional parameters to the `local.protected.php` configuration file, as seen here:
 ```Yaml
 dokuwiki_local:
   - name: "['passcrypt']"
     value: 'bcrypt'
 ```
 
-This will result in adding the following string to `/conf/local.php`:
+This will result in adding the following string to `/conf/local.protected.php`:
 ```Yaml
 $conf['passcrypt'] = 'bcrypt';
 ```

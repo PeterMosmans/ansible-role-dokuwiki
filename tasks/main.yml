@@ -56,8 +56,8 @@
     with_items:
       - src: acl.auth.php.j2
         dest: acl.auth.php
-      - src: local.php.j2
-        dest: local.php
+      - src: local.protected.php.j2
+        dest: local.protected.php
       - src: plugins.local.php.j2
         dest: plugins.local.php
       - src: users.auth.php.j2
