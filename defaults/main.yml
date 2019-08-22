@@ -1,27 +1,80 @@
 ---
 # defaults file for PeterMosmans.dokuwiki
-
-dokuwiki_base: /var/www/html
-dokuwiki_group: www-data
-dokuwiki_name: dokuwiki
-dokuwiki_plugins_remove:
-  - name: authad
-  - name: authldap
-  - name: authmysql
-  - name: authpdo
-  - name: authpgsql
-  - name: info
-  - name: popularity
+# webserver 
+dokuwiki_webserver: "nginx" # [nginx, apache]
 dokuwiki_provision: false
-dokuwiki_savedir: /var/www/html/data
-dokuwiki_source: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
-dokuwiki_user: root
+dokuwiki_webserver_nginx_conf: "/etc/nginx/" # This is nginx_main_template['conf_file_location'] if using nginxinc.nginx role
+
+
+# for apache
+#dokuwiki_user: root
+#dokuwiki_group: www-data
+# for nginx
+dokuwiki_user: nginx
+dokuwiki_group: www-data
+
+# Version to install
+dokuwiki_version: stable # [stable, old_stable, development]
+
+dokuwiki_server_name: "localhost"  
+dokuwiki_base: /var/www/dokuwiki
+dokuwiki_savedir: /var/www/dokuwiki/data
+
+dokuwiki_plugins:
+  - pagelist
+  - fastwiki
+  - edittable
+  - dw2pdf
+  - bookcreator
+  - tag
+  - discussion
+  - dropfiles
+  - color
+  - nspages
+  - sortablejs
+
+dokuwiki_plugins_remove:
+  - authad
+  - authldap
+  - authmysql
+  - authpdo
+  - authpgsql
+  - info
+  - popularity
 
 # Template parameters (will only be used when dokuwiki_provision is true)
 dokuwiki_acl_all: 0
 dokuwiki_acl_user: 8
-dokuwiki_disableactions: "register"
 dokuwiki_local:
   - name: "['passcrypt']"
     value: 'bcrypt'
-dokuwiki_title: "default Dokuwiki site"
+  - name: "['gzip_output']"
+    value: '1'
+  - name: "['updatecheck']"
+    value: '0'
+
+# Dokuwiki config options
+dokuwiki_name: "dokuwiki"
+dokuwiki_title: "Default Dokuwiki site"
+dokuwiki_opt_lang: "en"
+#dokuwiki_opt_superuser: "root"
+#dokuwiki_opt_fullname: "root"
+#dokuwiki_opt_email: "root"
+#dokuwiki_opt_password: "root"
+dokuwiki_opt_acl: "1"
+# dokuwiki_opt_policy
+# 0 - Open Wiki (read, write, upload for everyone)
+# 1 - Public Wiki (read for everyone, write and upload for registered users)
+# 2 - Closed Wiki (read, write, upload for registered users only)
+dokuwiki_opt_policy: "0"
+dokuwiki_disableactions: "register"
+#dokuwiki_opt_licence
+#cc-zero - CC0 1.0 Universal http://creativecommons.org/publicdomain/zero/1.0/
+#publicdomain - Public Domain http://creativecommons.org/licenses/publicdomain/
+#cc-by - CC Attribution 4.0 International http://creativecommons.org/licenses/by/4.0/
+#cc-by-sa - CC Attribution-Share Alike 4.0 International http://creativecommons.org/licenses/by-sa/4.0/
+#gnufdl - GNU Free Documentation License 1.3 http://www.gnu.org/licenses/fdl-1.3.html
+#cc-by-nc - CC Attribution-Noncommercial 4.0 International http://creativecommons.org/licenses/by-nc/4.0/
+#cc-by-nc-sa - CC Attribution-Noncommercial-Share Alike 4.0 International http://creativecommons.org/licenses/by-nc-sa/4.0/
+#0 - Do not show any license information
+dokuwiki_opt_license: "0"

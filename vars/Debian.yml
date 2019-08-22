@@ -1,2 +1,28 @@
 ---
 # vars file for PeterMosmans.dokuwiki
+dokuwiki_dependencies:
+  - javascript-common
+  - libjs-jquery
+  - libjs-jquery-cookie
+  - libjs-jquery-ui
+  - libphp-simplepie
+  - php
+  - php-geshi
+  - php-seclib
+  - php-xml
+  - php-gd
+  - php-mbstring
+  - ucf
+  - unzip
+  - tar
+
+dokuwiki_recommendations:
+  - imagemagick
+  - php-gd
+  - php-ldap
+
+# unused_for_now:
+#     - ca-certificates
+#     - openssl
+#     - php5-sqlite
+#     - zip

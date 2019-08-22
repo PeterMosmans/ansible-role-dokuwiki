@@ -1,2 +1,5 @@
 ---
 # vars file for PeterMosmans.dokuwiki
+dokuwiki_stable_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+dokuwiki_old_stable_url: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-oldstable.tgz
+dokuwiki_development_url: http://github.com/splitbrain/dokuwiki/tarball/master

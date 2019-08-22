@@ -4,3 +4,13 @@
   service:
     name: apache2
     state: restarted
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: restart php-fpm
+  service:
+    name: "{{ dokuwiki_phpfpm_service.files[0].path | basename | splitext | first }}"
+    state: restarted

@@ -1,32 +1,104 @@
 ---
-- name: Install required packages
-  apt:
+- name: Install Required Dependencies # must be done before php-fpm, due to mbstring
+  become: true
+  package:
     name: "{{ item }}"
-    state: present
+    state: latest
     install_recommends: false
-  with_items:
-    - ca-certificates
-    - openssl
-    - php5-gd
-    - php5-sqlite
-    - tar
-    - unzip
-    - zip
+  with_items: "{{ dokuwiki_dependencies + dokuwiki_recommendations }}"
+#
+
+- name: Setup PHP-FPM
+  block:
+    - name: Install PHP-FPM
+      become: true
+      package:
+        name: php-fpm
+        state: latest
+        install_recommends: false
+  
+    - name: Find the conf.d dir, making this php version agnostic
+      find:
+        paths: "/etc/php/"
+        patterns: "pool.d"
+        recurse: yes
+        file_type: directory
+      register: dokuwiki_phpfpm_confd
+
+    - name: Register the PHP-FPM service name
+      find:
+        paths: "/lib/systemd/system/"
+        patterns: "php*fpm.service"
+        file_type: file
+      register: dokuwiki_phpfpm_service
+      # resulting service name will be "dokuwiki_phpfpm_service.files[0].path | basename | splitext | first"... yeah.
+  
+    - name: Configure PGP-FPM Pool
+      template:
+        src: php-fpm.www.conf.j2
+        dest: "{{ dokuwiki_phpfpm_confd.files[0].path }}/www.conf"
+        mode: "0644"
+        group: root
+        owner: root
+      notify:
+        - restart php-fpm
+  
+    - name: Add nginx user to group www-data (php-fpm permissions)
+      user:
+        name: "nginx"
+        groups: "www-data"
+        append: yes
+    
+  when: dokuwiki_webserver == "nginx" 
+#
 
 - name: Make sure Dokuwiki base directory exists (workaround for Ansible bug)
   file:
     path: "{{ dokuwiki_base }}"
-    state: directory
-
-- name: Download and extract latest version of Dokuwiki
-  unarchive:
-    src: "{{ dokuwiki_url }}"
-    dest: "{{ dokuwiki_base }}"
-    remote_src: true
-    extra_opts: ['--strip-components=1']
     group: "{{ dokuwiki_group }}"
     owner: "{{ dokuwiki_user }}"
-    mode: "0750"
+    mode: "0770"
+    state: directory 
+#
+
+- name: Download and extract Dokuwiki Stable
+  become: true
+  unarchive:
+    src: "{{ dokuwiki_stable_url }}"
+    remote_src: yes
+    dest: "{{ dokuwiki_base }}"
+    extra_opts: ['--strip-components=1'] # remove first dir
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+  when: dokuwiki_version == "stable"
   tags:
     - upgrade
+#
 
+- name: Download and extract Dokuwiki Old Stable
+  become: true
+  unarchive:
+    src: "{{ dokuwiki_old_stable_url }}"
+    remote_src: yes
+    dest: "{{ dokuwiki_base }}"
+    extra_opts: ['--strip-components=1'] # remove first dir
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+  when: dokuwiki_version == "old_stable"
+  tags:
+    - upgrade
+#
+
+- name: Download and extract Dokuwiki Development
+  become: true
+  unarchive:
+    src: "{{ dokuwiki_development_url }}"
+    remote_src: yes
+    dest: "{{ dokuwiki_base }}"
+    extra_opts: ['--strip-components=1'] # remove first dir
+    group: "{{ dokuwiki_group }}"
+    owner: "{{ dokuwiki_user }}"
+  when: dokuwiki_version == "development"
+  tags:
+    - upgrade
+#
