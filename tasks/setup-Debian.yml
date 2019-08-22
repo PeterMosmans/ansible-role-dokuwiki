@@ -52,7 +52,6 @@
   when: dokuwiki_webserver == "nginx" 
 #
 
-
 - name: Make sure Dokuwiki base directory exists (workaround for Ansible bug)
   file:
     path: "{{ dokuwiki_base }}"

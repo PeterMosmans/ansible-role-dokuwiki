@@ -39,7 +39,7 @@
 
 - name: Download and install latest version of templates via Dokuwiki's gittool
   become: yes
-  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install template:{{item.name}}"
+  shell: "/usr/bin/php {{ dokuwiki_base }}/bin/gittool.php install template:{{item}}"
   with_items: "{{ dokuwiki_templates|default([]) }}"
   tags:
     - templates
@@ -83,56 +83,6 @@
     tags:
       - provision
   when: dokuwiki_provision
-
-
-# - name: Download and install latest version of plugins
-#   become: yes
-#   unarchive:
-#     src: "{{ item.src }}"
-#     dest: "{{ dokuwiki_base }}/lib/plugins/{{ item.name }}"
-#     remote_src: true
-#     extra_opts: ['--strip-components=1']
-#     group: "{{ dokuwiki_group }}"
-#     owner: "{{ dokuwiki_user }}"
-#     #mode: "0770"
-#   with_items: "{{ dokuwiki_plugins|default([]) }}"
-#   tags:
-#     - plugins
-#     - upgrade
-
-# - name: Remove previous versions of templates
-#   file:
-#     path: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
-#     state: absent
-#   with_items: "{{ dokuwiki_templates|default([]) }}"
-#   tags:
-#     - templates
-#     - upgrade
-
-# - name: Recreate directory for each template (workaround for Ansible bug)
-#   file:
-#     path: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
-#     state: directory
-#     group: "{{ dokuwiki_group }}"
-#     owner: "{{ dokuwiki_user }}"
-#   with_items: "{{ dokuwiki_templates|default([]) }}"
-#   tags:
-#     - templates
-#     - upgrade
-
-# - name: Download and install latest version of templates
-#   unarchive:
-#     src: "{{ item.src }}"
-#     dest: "{{ dokuwiki_base }}/lib/tpl/{{ item.name }}"
-#     remote_src: true
-#     extra_opts: ['--strip-components=1']
-#     group: "{{ dokuwiki_group }}"
-#     owner: "{{ dokuwiki_user }}"
-#     mode: "0770"
-#   with_items: "{{ dokuwiki_templates|default([]) }}"
-#   tags:
-#     - templates
-#     - upgrade
 
 - name: Customize template using online files
   get_url:
@@ -183,7 +133,7 @@
     - permission
     - upgrade
 
-- name: Configure nginx and deploy Dokuwiki
+- name: Apply and deploy Nginx configuration for Dokuwiki
   block:
   - name: Ensure Nginx conf.d exists
     file:
@@ -193,7 +143,7 @@
       owner: root
       mode: "0770"
 
-  - name: Create dokuwiki nginx config file and restart Nginx
+  - name: Create dokuwiki config file and restart Nginx
     template:
       src: nginx.dokuwiki.conf.j2
       dest: "/etc/nginx/conf.d/{{ dokuwiki_name }}.conf"
@@ -204,8 +154,8 @@
       - templates
     notify:
       - restart nginx
-    #when: dokuwiki_webserver is defined and dokuwiki_webserver == "nginx"
-  when: dokuwiki_webserver == "nginx"
+  when: dokuwiki_webserver is defined and dokuwiki_webserver == "nginx"
+  #when: dokuwiki_webserver == "nginx"
 
 - block:
   - name: Apply and deploy Apache configuration for Dokuwiki
@@ -220,13 +170,13 @@
     notify:
       - restart apache2
 
-  - name: Enable the site
+  - name: Enable dokuwiki and restart Apache
     command:
       a2ensite {{ dokuwiki_name }}.conf
     notify:
       - restart apache2
 
-  when: dokuwiki_configure_apache2 is defined and dokuwiki_configure_apache2
+  when: dokuwiki_webserver is defined and dokuwiki_webserver == "apache"
 
 
  
